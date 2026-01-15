@@ -20,3 +20,4 @@ obj/
 
 # Crash dumps
 *.dmp
+.dotnet/
