@@ -24,13 +24,13 @@ public sealed class TrayIcon : IDisposable
     {
         _settings = settings;
 
-        _openSettingsItem = new ToolStripMenuItem("Configuracoes...");
+        _openSettingsItem = new ToolStripMenuItem("Settings...");
         _openSettingsItem.Click += (s, e) => OpenSettingsRequested?.Invoke(this, EventArgs.Empty);
 
-        _enabledItem = new ToolStripMenuItem("Ativado") { Checked = _settings.Enabled, CheckOnClick = true };
+        _enabledItem = new ToolStripMenuItem("Enabled") { Checked = _settings.Enabled, CheckOnClick = true };
         _enabledItem.CheckedChanged += (s, e) => EnabledToggled?.Invoke(this, _enabledItem.Checked);
 
-        _exitItem = new ToolStripMenuItem("Sair");
+        _exitItem = new ToolStripMenuItem("Exit");
         _exitItem.Click += (s, e) => ExitRequested?.Invoke(this, EventArgs.Empty);
 
         var cms = new ContextMenuStrip();
