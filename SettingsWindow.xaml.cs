@@ -15,14 +15,14 @@ public partial class SettingsWindow : Window
         InitializeComponent();
         _vm = vm;
         DataContext = _vm;
-        this.Title = "Soft Scroll - Configuracoes";
+        this.Title = "Soft Scroll - Settings";
     }
 
     private void OnSave(object sender, RoutedEventArgs e)
     {
         var snapshot = _vm.Snapshot();
         snapshot.Save();
-        this.Title = "Soft Scroll - Configuracoes (salvo)";
+        this.Title = "Soft Scroll - Settings (saved)";
     }
 
     private void OnResetDefaults(object sender, RoutedEventArgs e)
