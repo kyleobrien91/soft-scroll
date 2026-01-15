@@ -8,6 +8,8 @@ namespace SmoothScrollClone;
 public sealed class SmoothScrollEngine : IDisposable
 {
     private readonly object _lock = new();
+    private static readonly INPUT[] _reusableInput = new INPUT[1];
+    private static readonly object _inputLock = new();
     private Thread? _thread;
     private bool _running;
 
@@ -106,28 +108,34 @@ public sealed class SmoothScrollEngine : IDisposable
 
     private static void SendWheel(int mouseData)
     {
-        var inp = new INPUT
+        lock (_inputLock)
         {
-            type = 0,
-            U = new InputUnion
+            _reusableInput[0] = new INPUT
             {
-                mi = new MOUSEINPUT { dwFlags = MOUSEEVENTF_WHEEL, mouseData = mouseData }
-            }
-        };
-        SendInput(1, new[] { inp }, Marshal.SizeOf<INPUT>());
+                type = 0,
+                U = new InputUnion
+                {
+                    mi = new MOUSEINPUT { dwFlags = MOUSEEVENTF_WHEEL, mouseData = mouseData }
+                }
+            };
+            SendInput(1, _reusableInput, Marshal.SizeOf<INPUT>());
+        }
     }
 
     private static void SendHWheel(int mouseData)
     {
-        var inp = new INPUT
+        lock (_inputLock)
         {
-            type = 0,
-            U = new InputUnion
+            _reusableInput[0] = new INPUT
             {
-                mi = new MOUSEINPUT { dwFlags = MOUSEEVENTF_HWHEEL, mouseData = mouseData }
-            }
-        };
-        SendInput(1, new[] { inp }, Marshal.SizeOf<INPUT>());
+                type = 0,
+                U = new InputUnion
+                {
+                    mi = new MOUSEINPUT { dwFlags = MOUSEEVENTF_HWHEEL, mouseData = mouseData }
+                }
+            };
+            SendInput(1, _reusableInput, Marshal.SizeOf<INPUT>());
+        }
     }
 
     public void Dispose() => Stop();
